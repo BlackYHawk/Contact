@@ -5,6 +5,8 @@ package com.hawk.contact;
  */
 public interface Display {
 
+    public void startAddAccountActivity();
 
+    public void setActionBarTitle(CharSequence title);    //设置标题名
 
 }

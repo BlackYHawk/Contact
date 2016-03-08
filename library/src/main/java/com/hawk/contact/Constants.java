@@ -5,5 +5,6 @@ package com.hawk.contact;
  */
 public class Constants {
 
+    public static final boolean DEBUG = true;
 
 }

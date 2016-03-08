@@ -31,12 +31,8 @@ public abstract class BaseController {
 
     protected void onSuspended() {};
 
-    public boolean ismInited() {
+    public boolean isInited() {
         return mInited;
-    }
-
-    public void setmInited(boolean mInited) {
-        this.mInited = mInited;
     }
 
     public Display getDisplay() {
