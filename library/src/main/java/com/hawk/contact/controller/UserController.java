@@ -5,13 +5,14 @@ import android.text.TextUtils;
 import com.google.common.base.Preconditions;
 import com.hawk.contact.Display;
 import com.hawk.contact.accounts.ContactAccountManager;
+import com.hawk.contact.lib.R;
 import com.hawk.contact.model.ContactAccount;
+import com.hawk.contact.model.ListItem;
 import com.hawk.contact.state.UserState;
 import com.hawk.contact.util.BackgroundExecutor;
 import com.hawk.contact.util.CollectionsUtil;
 import com.hawk.contact.util.Logger;
 import com.hawk.contact.util.StringFetcher;
-import com.hawk.mylibrary.R;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class UserController extends BaseUIController<UserController.UserUi, User
     }
 
     public interface UserUiCallbacks {
+
         void onTitleChanged(String newTitle);
 
         boolean isUsernameValid(String username);
@@ -94,6 +96,18 @@ public class UserController extends BaseUIController<UserController.UserUi, User
         }
     }
 
+    @Override
+    protected void populateUi(UserUi ui) {
+
+        if(ui instanceof UserTabUi) {
+            populateTabUi((UserTabUi)ui);
+        }
+    }
+
+    private void populateTabUi(UserTabUi userTabUi) {
+        userTabUi.setTabs(ContactTab.DIAL, ContactTab.PEOPLE);
+    }
+
     @Subscribe
     public void onAccountChanged(UserState.AccountChangedEvent event) {
         ContactAccount currentAccount = mUserState.getCurrentAccount();
@@ -127,6 +141,7 @@ public class UserController extends BaseUIController<UserController.UserUi, User
     @Override
     protected UserUiCallbacks createUICallback(UserUi ui) {
         return new UserUiCallbacks() {
+
             @Override
             public void onTitleChanged(String newTitle) {
                 updateDisplayTitle(newTitle);
@@ -161,4 +176,17 @@ public class UserController extends BaseUIController<UserController.UserUi, User
             }
         };
     }
+
+    public static enum ContactTab {
+        DIAL, PEOPLE
+    }
+
+    public interface UserTabUi extends UserUi {
+        void setTabs(ContactTab... tabs);
+    }
+
+    public interface BaseUserListUi<E> extends UserUi {
+        void setItems(List<ListItem<E>> items);
+    }
+
 }

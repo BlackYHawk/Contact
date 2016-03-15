@@ -1,6 +1,10 @@
 <resources>
 
     <string name="app_name">Library</string>
+
+    <string name="dial_title">Dial</string>
+    <string name="people_title">People</string>
+
     <string name="account_login">Login</string>
 
 </resources>

@@ -3,20 +3,16 @@ package com.hawk.contact.state;
 import com.hawk.contact.model.ContactUserProfile;
 
 /**
- * Created by Administrator on 2016/3/8.
+ * Created by heyong on 16/3/10.
  */
-public interface AsyncDatabaseHelper {
+public interface DatabaseHelper {
 
-    public void getUserProfile(String username, Callback<ContactUserProfile> callback);
+    public ContactUserProfile getUserProfile(String username);
 
     public void putUserProfile(ContactUserProfile contactUserProfile);
 
     public void deleteUserProfile(ContactUserProfile contactUserProfile);
 
     public boolean close();
-
-    public interface Callback<T> {
-        public void onFinished(T result);
-    }
 
 }
