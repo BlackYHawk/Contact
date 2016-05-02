@@ -13,7 +13,7 @@ public interface AsyncDatabaseHelper {
 
     public void deleteUserProfile(ContactUserProfile contactUserProfile);
 
-    public boolean close();
+    public void close();
 
     public interface Callback<T> {
         public void onFinished(T result);

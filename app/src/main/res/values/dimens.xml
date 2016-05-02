@@ -8,5 +8,8 @@
     <dimen name="spacing_major">16dp</dimen>
     <dimen name="spacing_massive">24dp</dimen>
 
+    <dimen name="contact_list_image_width">48dp</dimen>
+    <dimen name="contact_list_item_height">88dp</dimen>
     <dimen name="contact_discover_tab_height">48dp</dimen>
+
 </resources>

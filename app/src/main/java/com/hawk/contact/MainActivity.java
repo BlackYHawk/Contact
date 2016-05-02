@@ -9,7 +9,7 @@ import com.hawk.contact.controller.MainController;
 
 public class MainActivity extends BaseActivity implements MainController.MainUi {
 
-    private MainController.MainUiCallbacks mMainUiCallbacks;
+    private MainController.MainControllerUiCallbacks mMainUiCallbacks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,12 @@ public class MainActivity extends BaseActivity implements MainController.MainUi 
     }
 
     @Override
-    public void setCallback(MainController.MainUiCallbacks mainUiCallbacks) {
+    public void showLoginPrompt() {
+
+    }
+
+    @Override
+    public void setCallback(MainController.MainControllerUiCallbacks mainUiCallbacks) {
         mMainUiCallbacks = mainUiCallbacks;
     }
 

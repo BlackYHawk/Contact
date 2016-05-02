@@ -13,6 +13,8 @@ public interface DatabaseHelper {
 
     public void deleteUserProfile(ContactUserProfile contactUserProfile);
 
-    public boolean close();
+    void close();
+
+    boolean isClosed();
 
 }

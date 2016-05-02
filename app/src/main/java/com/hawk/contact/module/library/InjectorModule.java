@@ -1,4 +1,4 @@
-package com.hawk.contact.module;
+package com.hawk.contact.module.library;
 
 import com.google.common.base.Preconditions;
 import com.hawk.contact.util.Injector;
@@ -12,10 +12,10 @@ import dagger.Provides;
 @Module(
         library = true
 )
-public class InjectModule {
+public class InjectorModule {
     public final Injector mInjector;
 
-    public InjectModule(Injector injector) {
+    public InjectorModule(Injector injector) {
         mInjector = Preconditions.checkNotNull(injector, "injector cannot be null");
     }
 

@@ -17,6 +17,11 @@ public class ContactTabFragment extends BaseContactTabFragment implements UserCo
     private UserController.ContactTab[] mTabs;
 
     @Override
+    public String getRequestParameter() {
+        return null;
+    }
+
+    @Override
     public boolean isModal() {
         return false;
     }
@@ -46,9 +51,9 @@ public class ContactTabFragment extends BaseContactTabFragment implements UserCo
     private Fragment createFragmentForTab(UserController.ContactTab tab) {
         switch (tab) {
             case DIAL:
-                return new ;
+                return null;
             case PEOPLE:
-                return new ;
+                return null;
         }
         return null;
     }

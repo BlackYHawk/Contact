@@ -1,53 +1,76 @@
 package com.hawk.contact.controller;
 
+import android.content.Intent;
+
 import com.google.common.base.Preconditions;
 import com.hawk.contact.Display;
 import com.hawk.contact.state.ApplicationState;
 import com.hawk.contact.state.AsyncDatabaseHelper;
 import com.hawk.contact.util.Logger;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /**
  * Created by heyong on 16/3/10.
  */
-public class MainController extends BaseUIController<MainController.MainUi, MainController.MainUiCallbacks> {
+@Singleton
+public class MainController extends BaseUIController<MainController.MainControllerUi,
+        MainController.MainControllerUiCallbacks> {
 
-    private static final String MAIN_TAG = MainController.class.getSimpleName();
+    private static final String LOG_TAG = MainController.class.getSimpleName();
 
-    public interface MainUi extends BaseUIController.Ui<MainUiCallbacks> {
+
+    public interface HostCallbacks {
+        void finish();
+
+        void setAccountAuthenticatorResult(String username, String authToken, String accountType);
+    }
+
+    public interface MainControllerUi extends BaseUIController.Ui<MainControllerUiCallbacks> {
 
     }
 
-    public interface MainUiCallbacks {
-        void setShowLoginPrompt();
-        void addRequestLogin();
+    public interface MainUi extends MainControllerUi {
+        void showLoginPrompt();
+    }
+
+    public interface MainControllerUiCallbacks {
+        void addAccountRequested();
+
+        void setShownLoginPrompt();
     }
 
     private UserController mUserController;
     private ApplicationState mApplicationState;
     private AsyncDatabaseHelper mAsyncDatabaseHelper;
     private Logger mLogger;
+    private HostCallbacks mHostCallbacks;
 
+    @Inject
     public MainController(UserController mUserController, ApplicationState mApplicationState,
                           AsyncDatabaseHelper mAsyncDatabaseHelper, Logger mLogger) {
         this.mUserController = Preconditions.checkNotNull(mUserController, "UserController cannot be null");
         this.mApplicationState = Preconditions.checkNotNull(mApplicationState, "ApplicationState cannot be null");
         this.mAsyncDatabaseHelper = Preconditions.checkNotNull(mAsyncDatabaseHelper, "AsyncDatabaseHelper cannot be null");
         this.mLogger = Preconditions.checkNotNull(mLogger, "Logger cannot be null");
+
+        mUserController.setControllerCallbacks(new UserController.ControllerCallbacks() {
+            @Override
+            public void onAddAccountCompleted(String username, String authToken, String authTokenType) {
+                if (mHostCallbacks != null) {
+                    mHostCallbacks.setAccountAuthenticatorResult(username, authToken, authTokenType);
+                    mHostCallbacks.finish();
+                }
+            }
+        });
     }
 
     @Override
-    protected MainUiCallbacks createUICallback(MainUi ui) {
-        return new MainUiCallbacks() {
-            @Override
-            public void setShowLoginPrompt() {
+    public boolean handleIntent(Intent intent) {
+        mLogger.d(LOG_TAG, "handleIntent: " + intent);
 
-            }
-
-            @Override
-            public void addRequestLogin() {
-
-            }
-        };
+        return mUserController.handleIntent(intent);
     }
 
     @Override
@@ -59,12 +82,29 @@ public class MainController extends BaseUIController<MainController.MainUi, Main
     }
 
     @Override
+    protected MainControllerUiCallbacks createUICallback(MainControllerUi ui) {
+        return new MainControllerUiCallbacks() {
+
+            @Override
+            public void addAccountRequested() {
+
+            }
+
+            @Override
+            public void setShownLoginPrompt() {
+
+            }
+        };
+    }
+
+    @Override
     protected void onSuspended() {
-        super.onSuspended();
+        mUserController.suspend();
+
         mAsyncDatabaseHelper.close();
         mApplicationState.unregisterForEvents(this);
 
-        mUserController.suspend();
+        super.onSuspended();
     }
 
     public void attachDisplay(Display display) {
@@ -86,7 +126,11 @@ public class MainController extends BaseUIController<MainController.MainUi, Main
         mUserController.setDisplay(display);
     }
 
-    public UserController getUserController() {
+    public void setHostCallbacks(HostCallbacks hostCallbacks) {
+        mHostCallbacks = hostCallbacks;
+    }
+
+    public final UserController getUserController() {
         return mUserController;
     }
 }

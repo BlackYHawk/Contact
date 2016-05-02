@@ -1,9 +1,12 @@
-package com.hawk.contact.module;
+package com.hawk.contact.module.library;
 
+import android.accounts.AccountManager;
 import android.content.Context;
 
 import com.google.common.base.Preconditions;
 import com.hawk.contact.qualifier.ApplicationContext;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -26,6 +29,11 @@ public class ContextProvider {
     @Provides @ApplicationContext
     public Context provideApplicationContext() {
         return mApplicationContext;
+    }
+
+    @Provides @Singleton
+    public AccountManager provideAccountManager() {
+        return AccountManager.get(mApplicationContext);
     }
 
 }

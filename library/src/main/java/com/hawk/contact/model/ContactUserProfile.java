@@ -5,7 +5,7 @@ package com.hawk.contact.model;
  */
 public class ContactUserProfile {
 
-    private long _id;
+    private Long _id;
     private String username;
     private String fullname;
     private String avatarUrl;

@@ -31,6 +31,10 @@ dependencies {
     compile project(':library')
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.1.1'
+
+    compile 'com.squareup.picasso:picasso:2.4.+'
+    compile 'nl.qbusict:cupboard:2.0.+'
     compile 'com.github.castorflex.smoothprogressbar:library:0.4.+'
+
     apt 'com.squareup.dagger:dagger-compiler:1.2.+'
 }

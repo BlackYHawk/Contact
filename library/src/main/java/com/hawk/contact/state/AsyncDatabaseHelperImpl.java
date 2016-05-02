@@ -56,8 +56,8 @@ public class AsyncDatabaseHelperImpl implements AsyncDatabaseHelper {
     }
 
     @Override
-    public boolean close() {
-        return mDatabaseHelper.close();
+    public void close() {
+        mDatabaseHelper.close();
     }
 
     private abstract class DatabaseBackgroundRunnable<R> extends BackgroundCallRunnable<R> {
@@ -65,7 +65,7 @@ public class AsyncDatabaseHelperImpl implements AsyncDatabaseHelper {
         @Override
         public R runAsync() {
             final DatabaseHelper databaseHelper = mDatabaseHelper;
-            if(databaseHelper.close()) {
+            if(databaseHelper.isClosed()) {
                 return null;
             }
             

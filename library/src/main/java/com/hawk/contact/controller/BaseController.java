@@ -1,5 +1,7 @@
 package com.hawk.contact.controller;
 
+import android.content.Intent;
+
 import com.google.common.base.Preconditions;
 import com.hawk.contact.Display;
 
@@ -33,6 +35,10 @@ public abstract class BaseController {
 
     public boolean isInited() {
         return mInited;
+    }
+
+    public boolean handleIntent(Intent intent) {
+        return false;
     }
 
     public Display getDisplay() {

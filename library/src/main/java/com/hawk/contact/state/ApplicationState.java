@@ -2,29 +2,29 @@ package com.hawk.contact.state;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.eventbus.EventBus;
 import com.hawk.contact.model.ContactAccount;
 import com.hawk.contact.model.ContactUserProfile;
+import com.squareup.otto.Bus;
 
 /**
  * Created by heyong on 16/3/10.
  */
 public class ApplicationState implements BaseState, UserState {
 
-    private EventBus eventBus;
+    private Bus mEventBus;
     private ContactAccount contactAccount;
     private ContactUserProfile contactUserProfile;
     private String username;
 
-    public ApplicationState(EventBus eventBus) {
-        eventBus = Preconditions.checkNotNull(eventBus, "EventBus cannot be null");
+    public ApplicationState(Bus eventBus) {
+        mEventBus = Preconditions.checkNotNull(eventBus, "EventBus cannot be null");
     }
 
     @Override
     public void setCurrentAccount(ContactAccount account) {
-        if(Objects.equal(contactAccount, account)) {
+        if(!Objects.equal(contactAccount, account)) {
             contactAccount = account;
-            eventBus.post(new AccountChangedEvent());
+            mEventBus.post(new AccountChangedEvent());
         }
     }
 
@@ -45,11 +45,11 @@ public class ApplicationState implements BaseState, UserState {
 
     @Override
     public void registerForEvents(Object receiver) {
-        eventBus.register(receiver);
+        mEventBus.register(receiver);
     }
 
     @Override
     public void unregisterForEvents(Object receiver) {
-        eventBus.unregister(receiver);
+        mEventBus.unregister(receiver);
     }
 }
