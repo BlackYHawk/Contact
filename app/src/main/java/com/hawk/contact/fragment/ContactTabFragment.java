@@ -17,6 +17,11 @@ public class ContactTabFragment extends BaseContactTabFragment implements UserCo
     private UserController.ContactTab[] mTabs;
 
     @Override
+    public UserController.UserQueryType getUserQueryType() {
+        return UserController.UserQueryType.DISCOVER;
+    }
+
+    @Override
     public String getRequestParameter() {
         return null;
     }
@@ -51,9 +56,9 @@ public class ContactTabFragment extends BaseContactTabFragment implements UserCo
     private Fragment createFragmentForTab(UserController.ContactTab tab) {
         switch (tab) {
             case DIAL:
-                return null;
+                return new ContactSearchListFragment();
             case PEOPLE:
-                return null;
+                return new ContactSearchListFragment();
         }
         return null;
     }

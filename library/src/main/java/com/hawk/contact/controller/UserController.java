@@ -17,8 +17,10 @@ import com.hawk.contact.util.Logger;
 import com.hawk.contact.util.StringFetcher;
 import com.squareup.otto.Subscribe;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -43,6 +45,8 @@ public class UserController extends BaseUIController<UserController.UserUi, User
         void showLoadingProgress(boolean visible);
 
         void showError(Error error);
+
+        UserQueryType getUserQueryType();
 
         String getRequestParameter();
     }
@@ -275,6 +279,64 @@ public class UserController extends BaseUIController<UserController.UserUi, User
         }
     }
 
+    public static enum UserQueryType {
+        DISCOVER, WATCHLIST, RECOMMENDED, SEARCH, SEARCH_PEOPLE,
+        PERSON_DETAIL, PERSON_RELATED, PERSON_IMAGES,
+        NONE;
+
+        private static final List<UserFilter> USERLIST_SECTIONS_DISPLAY = Arrays.asList(
+                UserFilter.COLLECTION, UserFilter.SEEN, UserFilter.UNSEEN);
+        private static final List<UserFilter> USERLIST_SECTIONS_PROCESSING = Arrays.asList(
+                UserFilter.COLLECTION, UserFilter.SEEN, UserFilter.UNSEEN);
+
+        public boolean requireLogin() {
+            switch (this) {
+                case WATCHLIST:
+                case RECOMMENDED:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public boolean supportFiltering() {
+            switch (this) {
+                case WATCHLIST:
+                case RECOMMENDED:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public boolean showUpNavigation() {
+            switch (this) {
+                case PERSON_IMAGES:
+                case PERSON_DETAIL:
+                case SEARCH_PEOPLE:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public List<UserFilter> getSections() {
+            switch (this) {
+                case WATCHLIST:
+                    return USERLIST_SECTIONS_DISPLAY;
+            }
+            return null;
+        }
+
+        public List<UserFilter> getSectionsProcessingOrder() {
+            switch (this) {
+                case WATCHLIST:
+                    return USERLIST_SECTIONS_PROCESSING;
+            }
+            return null;
+        }
+    }
+
     public interface UserTabUi extends UserUi {
         void setTabs(ContactTab... tabs);
     }
@@ -284,7 +346,11 @@ public class UserController extends BaseUIController<UserController.UserUi, User
     }
 
     public interface UserListUi extends BaseUserListUi<ContactPerson> {
+        void setFiltersVisibility(boolean visible);
 
+        void showActiveFilters(Set<UserFilter> filters);
     }
+
+    public interface SearchPersonUi extends UserListUi {}
 
 }
