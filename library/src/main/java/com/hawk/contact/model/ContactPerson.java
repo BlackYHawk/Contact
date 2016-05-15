@@ -8,6 +8,13 @@ import java.util.Date;
  */
 public class ContactPerson extends ContactModel<ContactPerson> {
 
+    public static final Comparator<ContactPerson> COMPARATOR_SORT_TITLE
+            = new Comparator<ContactPerson>() {
+        @Override
+        public int compare(ContactPerson contactPerson, ContactPerson contactPerson2) {
+            return contactPerson.getName().compareTo(contactPerson2.getName());
+        }
+    };
 
     public static final Comparator<ListItem<ContactPerson>> COMPARATOR_LIST_ITEM_DATE_ASC
             = new ListItemAddDateComparator(true);

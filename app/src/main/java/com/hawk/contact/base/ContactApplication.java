@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.hawk.contact.controller.MainController;
 import com.hawk.contact.module.ApplicationModule;
+import com.hawk.contact.module.ViewUtilProvider;
 import com.hawk.contact.module.library.ContextProvider;
 import com.hawk.contact.module.library.InjectorModule;
 import com.hawk.contact.module.library.UtilProvider;
@@ -34,6 +35,7 @@ public class ContactApplication extends Application implements Injector {
 
         objectGraph = ObjectGraph.create(new ContextProvider(this),
                 new ApplicationModule(),
+                new ViewUtilProvider(),
                 new InjectorModule(this),
                 new UtilProvider());
         objectGraph.inject(this);

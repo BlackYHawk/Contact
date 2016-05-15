@@ -1,22 +1,33 @@
 package com.hawk.contact.state;
 
-import com.hawk.contact.model.ContactUserProfile;
+import com.hawk.contact.model.ContactPerson;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/3/8.
  */
 public interface AsyncDatabaseHelper {
 
-    public void getUserProfile(String username, Callback<ContactUserProfile> callback);
+    void getContactPersonlist(Callback<List<ContactPerson>> callback);
 
-    public void putUserProfile(ContactUserProfile contactUserProfile);
+    void getPerson(String username, Callback<ContactPerson> callback);
 
-    public void deleteUserProfile(ContactUserProfile contactUserProfile);
+    void putPerson(ContactPerson contactPerson);
 
-    public void close();
+    void deletePerson(ContactPerson contactPerson);
 
-    public interface Callback<T> {
-        public void onFinished(T result);
+    void put(Collection<ContactPerson> contactPersons);
+
+    void delete(Collection<ContactPerson> contactPersons);
+
+    void deleteAllContactPersons();
+
+    void close();
+
+    interface Callback<T> {
+        void onFinished(T result);
     }
 
 }

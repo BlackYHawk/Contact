@@ -3,7 +3,7 @@ package com.hawk.contact.state;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.hawk.contact.model.ContactAccount;
-import com.hawk.contact.model.ContactUserProfile;
+import com.hawk.contact.model.ContactPerson;
 import com.squareup.otto.Bus;
 
 /**
@@ -13,7 +13,7 @@ public class ApplicationState implements BaseState, UserState {
 
     private Bus mEventBus;
     private ContactAccount contactAccount;
-    private ContactUserProfile contactUserProfile;
+    private ContactPerson contactPerson;
     private String username;
 
     public ApplicationState(Bus eventBus) {

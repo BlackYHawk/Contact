@@ -24,10 +24,11 @@ import android.util.Log;
 import com.google.common.base.Preconditions;
 import com.hawk.contact.Constants;
 import com.hawk.contact.model.ContactPerson;
-import com.hawk.contact.model.ContactUserProfile;
 
+import java.util.Collection;
 import java.util.List;
 
+import nl.qbusict.cupboard.DatabaseCompartment;
 import nl.qbusict.cupboard.QueryResultIterable;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
@@ -36,11 +37,11 @@ public class ContactSQLiteOpenHelper extends SQLiteOpenHelper implements Databas
 
     private static String LOG_TAG = ContactSQLiteOpenHelper.class.getSimpleName();
 
-    private static final String DATABASE_NAME = "philm.db";
-    private static final int DATABASE_VERSION = 29;
+    private static final String DATABASE_NAME = "contact.db";
+    private static final int DATABASE_VERSION = 1;
     private static final int LAST_DATABASE_NUKE_VERSION = 28;
 
-    private static final Class[] ENTITIES = new Class[]{ContactPerson.class, ContactUserProfile.class};
+    private static final Class[] ENTITIES = new Class[]{ContactPerson.class};
 
     static {
         // register our models
@@ -78,69 +79,18 @@ public class ContactSQLiteOpenHelper extends SQLiteOpenHelper implements Databas
         }
     }
 
-/*
     @Override
-    public List<ContactPerson> getLibrary() {
-        return queryMovies("traktInCollection = ? OR traktWatched = ?", "1", "1");
+    public List<ContactPerson> getContactPersonlist() {
+        return queryContactPersons(null);
     }
 
     @Override
-    public List<ContactPerson> getWatchlist() {
-        return queryMovies("traktInWatchlist = ?", "1");
-    }
-
-    @Override
-    public void put(ContactPerson movie) {
-        assetNotClosed();
-
-        try {
-            cupboard().withDatabase(getWritableDatabase()).put(movie);
-        } catch (Exception e) {
-            Crashlytics.logException(e);
-        }
-    }
-
-    @Override
-    public void put(Collection<ContactPerson> movies) {
-        assetNotClosed();
-        try {
-            cupboard().withDatabase(getWritableDatabase()).put(movies);
-        } catch (Exception e) {
-            Crashlytics.logException(e);
-        }
-    }
-
-    @Override
-    public void delete(Collection<ContactPerson> movies) {
-        assetNotClosed();
-
-        SQLiteDatabase db = null;
-
-        try {
-            db = getWritableDatabase();
-            db.beginTransaction();
-            final DatabaseCompartment dbc = cupboard().withDatabase(db);
-            for (ContactPerson movie : movies) {
-                dbc.delete(movie);
-            }
-            db.setTransactionSuccessful();
-        } catch (Exception e) {
-            Crashlytics.logException(e);
-        } finally {
-            if (db != null) {
-                db.endTransaction();
-            }
-        }
-    }
-*/
-
-    @Override
-    public ContactUserProfile getUserProfile(String username) {
+    public ContactPerson getPerson(String username) {
         assetNotClosed();
 
         try {
             return cupboard().withDatabase(getReadableDatabase())
-                    .query(ContactUserProfile.class)
+                    .query(ContactPerson.class)
                     .withSelection("username = ?", username)
                     .get();
         } catch (Exception e) {
@@ -150,32 +100,72 @@ public class ContactSQLiteOpenHelper extends SQLiteOpenHelper implements Databas
     }
 
     @Override
-    public void putUserProfile(ContactUserProfile contactUserProfile) {
+    public void putPerson(ContactPerson contactPerson) {
         assetNotClosed();
         try {
-            cupboard().withDatabase(getWritableDatabase()).put(contactUserProfile);
+            cupboard().withDatabase(getWritableDatabase()).put(contactPerson);
         } catch (Exception e) {
        //     Crashlytics.logException(e);
         }
     }
 
     @Override
-    public void deleteUserProfile(ContactUserProfile contactUserProfile) {
+    public void deletePerson(ContactPerson contactPerson) {
         assetNotClosed();
         try {
-            cupboard().withDatabase(getWritableDatabase()).delete(contactUserProfile);
+            cupboard().withDatabase(getWritableDatabase()).delete(contactPerson);
         } catch (Exception e) {
             //   Crashlytics.logException(e);
         }
     }
 
-/*
+    @Override
+    public void put(Collection<ContactPerson> contactPersons) {
+        assetNotClosed();
+        try {
+            cupboard().withDatabase(getWritableDatabase()).put(contactPersons);
+        } catch (Exception e) {
+       //     Crashlytics.logException(e);
+        }
+    }
 
     @Override
-    public void deleteAllPhilmMovies() {
-        deleteAllPhilmMovies(getWritableDatabase());
+    public void delete(Collection<ContactPerson> contactPersons) {
+        assetNotClosed();
+
+        SQLiteDatabase db = null;
+
+        try {
+            db = getWritableDatabase();
+            db.beginTransaction();
+            final DatabaseCompartment dbc = cupboard().withDatabase(db);
+            for (ContactPerson movie : contactPersons) {
+                dbc.delete(movie);
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+        //    Crashlytics.logException(e);
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+            }
+        }
     }
-*/
+
+    @Override
+    public void deleteAllContactPersons() {
+        assetNotClosed();
+        try {
+            final int numDeleted = cupboard().withDatabase(getWritableDatabase()).
+                    delete(ContactPerson.class, null);
+            if (Constants.DEBUG) {
+                Log.d(LOG_TAG, "deleteAllContactPersons. Deleted " + numDeleted + " rows.");
+            }
+        } catch (Exception e) {
+            //      Crashlytics.logException(e);
+        }
+    }
+
 
     @Override
     public synchronized void close() {
@@ -188,23 +178,11 @@ public class ContactSQLiteOpenHelper extends SQLiteOpenHelper implements Databas
         return mIsClosed;
     }
 
-    public void deleteAllPhilmMovies(SQLiteDatabase db) {
-        assetNotClosed();
-        try {
-            final int numDeleted = cupboard().withDatabase(db).delete(ContactPerson.class, null);
-            if (Constants.DEBUG) {
-                Log.d(LOG_TAG, "deleteAllPhilmMovies. Deleted " + numDeleted + " rows.");
-            }
-        } catch (Exception e) {
-      //      Crashlytics.logException(e);
-        }
-    }
-
     private void assetNotClosed() {
         Preconditions.checkState(!mIsClosed, "Database is closed");
     }
 
-    private List<ContactPerson> queryMovies(String selection, String... selectionArgs) {
+    private List<ContactPerson> queryContactPersons(String selection, String... selectionArgs) {
         assetNotClosed();
         QueryResultIterable<ContactPerson> itr = null;
 

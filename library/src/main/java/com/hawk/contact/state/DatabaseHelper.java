@@ -1,17 +1,28 @@
 package com.hawk.contact.state;
 
-import com.hawk.contact.model.ContactUserProfile;
+import com.hawk.contact.model.ContactPerson;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by heyong on 16/3/10.
  */
 public interface DatabaseHelper {
 
-    public ContactUserProfile getUserProfile(String username);
+    List<ContactPerson> getContactPersonlist();
 
-    public void putUserProfile(ContactUserProfile contactUserProfile);
+    ContactPerson getPerson(String username);
 
-    public void deleteUserProfile(ContactUserProfile contactUserProfile);
+    void putPerson(ContactPerson contactPerson);
+
+    void deletePerson(ContactPerson contactPerson);
+
+    void put(Collection<ContactPerson> contactPersons);
+
+    void delete(Collection<ContactPerson> contactPersons);
+
+    void deleteAllContactPersons();
 
     void close();
 

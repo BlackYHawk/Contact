@@ -2,6 +2,7 @@ package com.hawk.contact.module.library;
 
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.res.AssetManager;
 
 import com.google.common.base.Preconditions;
 import com.hawk.contact.qualifier.ApplicationContext;
@@ -34,6 +35,11 @@ public class ContextProvider {
     @Provides @Singleton
     public AccountManager provideAccountManager() {
         return AccountManager.get(mApplicationContext);
+    }
+
+    @Provides @Singleton
+    public AssetManager provideAssetManager() {
+        return mApplicationContext.getAssets();
     }
 
 }
