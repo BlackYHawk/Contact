@@ -1,7 +1,9 @@
 package com.hawk.contact.model;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by heyong on 16/4/24.
@@ -47,19 +49,29 @@ public class ContactPerson extends ContactModel<ContactPerson> {
         }
     }
 
-    private Long _id;
+    private String _id;
     private String name;
-    private String pictureUrl;
+    private String photoUrl;
     private String placeOfBirth;
     private Date dateOfAdd;
     private Date dateOfBirth;
     private Date dateOfDeath;
     private int age;
     private String biography;
-    private int pictureType;
+    private String phone;
+    public List<Item> emails = new ArrayList<>();
+    public List<Item> phones = new ArrayList<>();
 
     private boolean inCollection;
     private boolean watched;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public boolean isWatched() {
         return watched;
@@ -85,12 +97,12 @@ public class ContactPerson extends ContactModel<ContactPerson> {
         this.name = name;
     }
 
-    public String getPictureUrl() {
-        return pictureUrl;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public String getPlaceOfBirth() {
@@ -141,11 +153,21 @@ public class ContactPerson extends ContactModel<ContactPerson> {
         this.biography = biography;
     }
 
-    public int getPictureType() {
-        return pictureType;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPictureType(int pictureType) {
-        this.pictureType = pictureType;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public static class Item {
+        public String label;
+        public String value;
+
+        public Item(String label, String value) {
+            this.label = label;
+            this.value = value;
+        }
     }
 }

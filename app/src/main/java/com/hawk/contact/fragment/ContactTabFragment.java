@@ -56,7 +56,7 @@ public class ContactTabFragment extends BaseContactTabFragment implements UserCo
     private Fragment createFragmentForTab(UserController.ContactTab tab) {
         switch (tab) {
             case DIAL:
-                return new ContactSearchListFragment();
+                return new ContactLibrayListFragment();
             case PEOPLE:
                 return new ContactSearchListFragment();
         }

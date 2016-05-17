@@ -24,6 +24,8 @@ public interface AsyncDatabaseHelper {
 
     void deleteAllContactPersons();
 
+    void getLibrary(Callback<List<ContactPerson>> callback);
+
     void close();
 
     interface Callback<T> {

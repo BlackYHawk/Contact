@@ -1,7 +1,6 @@
 package com.hawk.contact;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.Menu;
 
 import com.hawk.contact.controller.MainController;
@@ -10,13 +9,6 @@ import com.hawk.contact.controller.MainController;
 public class MainActivity extends BaseActivity implements MainController.MainUi {
 
     private MainController.MainControllerUiCallbacks mMainUiCallbacks;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

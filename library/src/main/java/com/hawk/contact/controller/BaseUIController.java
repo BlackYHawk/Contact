@@ -91,11 +91,11 @@ public abstract class BaseUIController<U extends BaseUIController.Ui<UC>, UC> ex
         }
     }
 
-    protected void onUiAttached(Ui ui) {
+    protected void onUiAttached(U ui) {
 
     }
 
-    protected void onUiDetached(Ui ui) {
+    protected void onUiDetached(U ui) {
 
     }
 

@@ -112,6 +112,25 @@ public class AsyncDatabaseHelperImpl implements AsyncDatabaseHelper {
     }
 
     @Override
+    public void getLibrary(final Callback<List<ContactPerson>> callback) {
+        mBackgroundExecutor.execute(new DatabaseBackgroundRunnable<List<ContactPerson>>() {
+            @Override
+            public List<ContactPerson> doDatabaseCall(DatabaseHelper dbHelper) {
+                List<ContactPerson> library = dbHelper.fetchSystemContact();
+                if (library != null) {
+                    Collections.sort(library, ContactPerson.COMPARATOR_SORT_TITLE);
+                }
+                return library;
+            }
+
+            @Override
+            public void postExecute(List<ContactPerson> result) {
+                callback.onFinished(result);
+            }
+        });
+    }
+
+    @Override
     public void close() {
         mDatabaseHelper.close();
     }

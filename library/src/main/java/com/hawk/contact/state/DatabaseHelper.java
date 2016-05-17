@@ -24,6 +24,8 @@ public interface DatabaseHelper {
 
     void deleteAllContactPersons();
 
+    List<ContactPerson> fetchSystemContact();
+
     void close();
 
     boolean isClosed();

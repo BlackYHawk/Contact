@@ -13,10 +13,14 @@ public interface Display {
 
     public void startAddAccountActivity();
 
+    public void setActionBarTitle(CharSequence title);    //设置标题名
+
+    public void setActionBarSubtitle(CharSequence title);
+
+    public void showUpNavigation(boolean show);
+
     public void setColorScheme(ColorScheme colorScheme);
 
     public void setSupportActionBar(Object toolbar, boolean handleBackground);
-
-    public void setActionBarTitle(CharSequence title);    //设置标题名
 
 }

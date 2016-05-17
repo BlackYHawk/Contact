@@ -73,6 +73,32 @@ public class AndroidDisplay implements Display {
     }
 
     @Override
+    public void setActionBarTitle(CharSequence title) {
+        final ActionBar actionBar = mActivity.getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setTitle(title);
+        }
+    }
+
+    @Override
+    public void setActionBarSubtitle(CharSequence title) {
+        ActionBar ab = mActivity.getSupportActionBar();
+        if (ab != null) {
+            ab.setSubtitle(title);
+        }
+    }
+
+    @Override
+    public void showUpNavigation(boolean show) {
+        final ActionBar ab = mActivity.getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setHomeButtonEnabled(true);
+            ab.setHomeAsUpIndicator(show ? R.drawable.ic_back : R.drawable.ic_menu);
+        }
+    }
+
+    @Override
     public void setSupportActionBar(Object toolbar, boolean handleBackground) {
         mToolbar = (Toolbar) toolbar;
         mCanChangeToolbarBackground = handleBackground;
@@ -96,11 +122,4 @@ public class AndroidDisplay implements Display {
         }
     }
 
-    @Override
-    public void setActionBarTitle(CharSequence title) {
-        final ActionBar actionBar = mActivity.getSupportActionBar();
-        if(actionBar != null) {
-            actionBar.setTitle(title);
-        }
-    }
 }

@@ -14,7 +14,7 @@ import com.hawk.contact.display.AndroidDisplay;
 /**
  * Created by heyong on 16/3/11.
  */
-public class BaseActivity extends AppCompatActivity implements MainController.HostCallbacks {
+public abstract class BaseActivity extends AppCompatActivity implements MainController.HostCallbacks {
 
     private View mCardContainer;
     private MainController mMainController;
